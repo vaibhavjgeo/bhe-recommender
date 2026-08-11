@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2d6a4f" />
+<meta name="author" content="Vaibhav Jaiswal" />
+<meta name="robots" content="index, follow" />
+<meta name="keywords" content="BHE Recommender, borehole heat exchanger, geothermal feasibility, Germany, drilling cost, sustainable heating, Vaibhav Jaiswal, KIT, climate-projected geothermal, heat pump, drilling depth" />
+
+<title>BHE Recommender - Geothermal Feasibility Tool - Vaibhav Jaiswal</title>
+<meta name="description" content="Click anywhere on Germany to get a site-specific borehole feasibility report. Recommended depth, sustainable output, full cost breakdown, and AI interpretation - downloadable as PDF." />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Vaibhav Jaiswal Portfolio" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="BHE Recommender - Site-specific geothermal feasibility tool" />
+<meta property="og:description" content="Click anywhere on Germany to get a site-specific borehole feasibility report. Recommended depth, output, cost, and AI interpretation." />
+<meta property="og:url" content="/bhe//" />
+<meta property="og:image" content="/bhe//og-bhe.png" />
+<meta property="og:image:secure_url" content="/bhe//og-bhe.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BHE Recommender - interactive borehole drilling feasibility tool for Germany with map and PDF report" />
+
+<!-- Twitter / generic social card fallback -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BHE Recommender - Site-specific geothermal feasibility" />
+<meta name="twitter:description" content="Click anywhere on Germany to get a borehole feasibility report - depth, output, cost, AI interpretation." />
+<meta name="twitter:image" content="/bhe//og-bhe.png" />
+<meta name="twitter:image:alt" content="BHE Recommender - interactive borehole drilling feasibility tool for Germany" />
+
+<link rel="canonical" href="/bhe//" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f7f5f0'/%3E%3Ctext x='50' y='72' text-anchor='middle' fill='%232d6a4f' font-family='Georgia, serif' font-weight='700' font-style='italic' font-size='70'%3EV%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="/bhe//apple-touch-icon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+:root {
+  --bg: #f7f5f0; --bg-alt: #fdfcf8; --ink: #15201a; --ink-soft: #2d3d33; --ink-faint: #6b7a72;
+  --muted: #6b7a72; --muted-soft: #9aa39c; --accent: #2d6a4f; --accent-deep: #1f4a37;
+  --accent-soft: #e3ebe5; --accent-on: #ffffff; --paper: #ffffff; --card: #ffffff;
+  --line: #dde0d8; --line-strong: #15201a; --tag-bg: #e3ebe5; --tag-fg: #2d4d3d;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --max: 1200px; --gutter: 28px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ============ NAV (matches homepage) ============ */
+header.topbar { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px var(--gutter); gap: 24px; max-width: var(--max); margin: 0 auto; }
+.logo { font-family: var(--font-serif); font-weight: 600; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); }
+.logo-accent { color: var(--accent); }
+nav ul { display: flex; gap: 28px; list-style: none; font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+nav a:hover, nav .active { color: var(--accent); }
+.nav-github { font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border: 1px solid var(--line-strong); border-radius: 4px; transition: all 0.2s; }
+.nav-github:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.nav-github svg { width: 14px; height: 14px; }
+
+/* Hamburger button */
+.nav-toggle { display: none; background: none; border: 1px solid var(--line-strong); border-radius: 4px; padding: 8px 9px; cursor: pointer; flex-direction: column; gap: 4px; width: 36px; height: 36px; align-items: center; justify-content: center; }
+.nav-toggle span { display: block; width: 18px; height: 2px; background: var(--ink); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ============ HERO ============ */
+.hero { padding: 64px var(--gutter) 28px; max-width: var(--max); margin: 0 auto; }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--accent); margin-bottom: 24px; }
+.hero h1 { font-family: var(--font-serif); font-size: clamp(36px, 5vw, 60px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 22px; color: var(--ink); }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+.hero p { font-size: 17px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 16px; }
+.hero .audience { font-size: 14px; color: var(--ink-faint); font-style: italic; }
+.tech-tag { display: inline-block; font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 7px 14px; border-radius: 4px; margin-top: 12px; letter-spacing: 0.04em; }
+.tech-tag a { color: var(--accent-deep); text-decoration: underline; }
+
+.info-callout-wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter) 32px; }
+.info-callout { padding: 18px 22px; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+
+/* ============ WORKSPACE (map + form 2-col) ============ */
+.workspace { max-width: var(--max); margin: 0 auto 40px; padding: 0 var(--gutter); display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
+.map-panel, .form-panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+.map-panel-header { padding: 22px 24px 0; }
+.map-panel-header h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -0.012em; color: var(--ink); margin-bottom: 4px; }
+.map-panel-header .sub { font-size: 13px; color: var(--muted); line-height: 1.5; padding-bottom: 16px; }
+.map-wrap { position: relative; flex: 1; min-height: 480px; }
+#map { width: 100%; height: 100%; min-height: 480px; background: var(--bg-alt); }
+.click-prompt { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); background: rgba(247, 245, 240, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--accent); padding: 9px 18px; border-radius: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--accent-deep); z-index: 500; font-weight: 600; }
+.click-prompt.hidden { display: none; }
+.map-loading { position: absolute; inset: 0; background: rgba(247, 245, 240, 0.95); display: none; align-items: center; justify-content: center; gap: 12px; z-index: 600; font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
+.map-loading.active { display: flex; }
+.spinner { width: 26px; height: 26px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.map-legend { position: absolute; bottom: 16px; right: 16px; background: rgba(247, 245, 240, 0.95); backdrop-filter: blur(8px); border: 1px solid var(--line); padding: 10px 14px; border-radius: 6px; z-index: 500; min-width: 200px; }
+.map-legend h4 { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 6px; font-weight: 600; }
+.map-legend .bar { width: 100%; height: 10px; border-radius: 2px; background: linear-gradient(to right, #fff5f0, #67000d); margin-bottom: 4px; }
+.map-legend .vals { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+
+.form-panel { padding: 22px 26px; }
+.form-panel h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -0.012em; color: var(--ink); margin-bottom: 4px; }
+.form-panel .sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+.site-readout { background: var(--bg-alt); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 4px 4px 0; margin-bottom: 18px; font-family: var(--font-mono); font-size: 13px; color: var(--ink); line-height: 1.5; }
+.site-readout .label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 4px; font-weight: 600; }
+.site-readout.empty { color: var(--muted); border-left-color: var(--line); font-style: italic; }
+.site-readout.empty .label { color: var(--muted); }
+
+.form-row { margin-bottom: 16px; }
+.form-row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-row > label, .form-row > div > label:not(.checkbox-item) { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); font-weight: 600; margin-bottom: 6px; }
+.form-row input, .form-row select { width: 100%; padding: 10px 12px; font-family: var(--font-sans); font-size: 14px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+.form-row input:focus, .form-row select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.form-row .hint { font-size: 12px; color: var(--muted); margin-top: 5px; font-style: italic; }
+
+.checkbox-group { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.checkbox-item { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-sans); font-size: 14px; color: var(--ink); cursor: pointer; font-weight: 400; line-height: 1.4; width: auto; max-width: none; white-space: nowrap; }
+.checkbox-item input[type="checkbox"] { margin: 0; cursor: pointer; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--accent); }
+.checkbox-item input:disabled { cursor: default; }
+
+.form-actions { display: flex; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-deep); transform: translateY(-1px); }
+.btn-primary:disabled { background: var(--muted-soft); border-color: var(--muted-soft); cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.btn-ghost:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ============ RESULT CONTAINER (matches what BHE JS actually renders) ============ */
+#result-container { max-width: var(--max); margin: 0 auto 40px; padding: 0 var(--gutter); }
+.result-card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 36px 40px; box-shadow: 0 4px 20px rgba(21, 32, 26, 0.05); }
+.result-header { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.result-header .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
+.result-card h2 { font-family: var(--font-serif); font-size: 32px; font-weight: 600; letter-spacing: -0.018em; line-height: 1.15; margin-bottom: 12px; color: var(--ink); }
+.result-card h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
+.result-card .site-tag { font-family: var(--font-mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; line-height: 1.5; }
+
+/* PDF actions row */
+.result-actions { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding: 14px 18px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 6px; flex-wrap: wrap; }
+.result-actions .actions-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); font-weight: 500; letter-spacing: 0.04em; }
+.btn-pdf { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; background: var(--accent); color: var(--accent-on); border: 1px solid var(--accent); border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.btn-pdf:hover { background: var(--accent-deep); border-color: var(--accent-deep); transform: translateY(-1px); }
+
+/* Headline 3-stat row */
+.result-headline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+.result-headline .cell { background: var(--bg-alt); padding: 22px 24px; border-radius: 6px; border-left: 3px solid var(--accent); }
+.result-headline .cell .num { font-family: var(--font-serif); font-size: 36px; font-weight: 600; line-height: 1.05; color: var(--ink); margin-bottom: 6px; }
+.result-headline .cell .num small { font-size: 18px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.result-headline .cell .lbl { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+
+/* Body sections */
+.result-body h3 { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -0.012em; color: var(--ink); margin-bottom: 16px; margin-top: 32px; }
+.result-body h3:first-child { margin-top: 0; }
+
+/* Cost table */
+.cost-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 14px; }
+.cost-table td { padding: 11px 14px; border-bottom: 1px dashed var(--line); color: var(--ink-soft); }
+.cost-table td:first-child { color: var(--ink-soft); }
+.cost-table td:last-child { text-align: right; font-family: var(--font-mono); color: var(--ink); font-weight: 500; }
+.cost-table .cost-range { color: var(--muted); font-size: 11.5px; margin-left: 6px; }
+.cost-table tr.total td { font-weight: 600; padding-top: 14px; padding-bottom: 14px; border-top: 2px solid var(--ink); border-bottom: none; color: var(--ink); }
+.cost-table tr.total td:last-child { color: var(--accent-deep); font-size: 16px; }
+
+/* Budget banner */
+.budget-banner { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 6px; font-size: 14px; line-height: 1.55; margin-bottom: 22px; }
+.budget-banner.fits { background: var(--accent-soft); border-left: 3px solid var(--accent); color: var(--accent-deep); }
+.budget-banner.fits svg { color: var(--accent); flex-shrink: 0; }
+.budget-banner.over { background: #fdecec; border-left: 3px solid #c44e4e; color: #7c2a2a; }
+.budget-banner.over svg { color: #c44e4e; flex-shrink: 0; }
+
+/* Detail grid */
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.detail-item { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: var(--bg-alt); border-radius: 4px; }
+.detail-item .lbl { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.detail-item .val { font-family: var(--font-sans); font-size: 14px; color: var(--ink); font-weight: 500; }
+
+/* Horizon comparison */
+.horizon-intro { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 16px; }
+.horizon-intro strong { color: var(--ink); font-weight: 600; }
+.horizon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.horizon-card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; transition: all 0.2s; }
+.horizon-card.recommended { border: 2px solid var(--accent); background: var(--accent-soft); box-shadow: 0 4px 14px rgba(45, 106, 79, 0.12); position: relative; }
+.horizon-card.recommended::before { content: "RECOMMENDED"; position: absolute; top: -10px; left: 14px; background: var(--accent); color: var(--accent-on); font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: 0.12em; padding: 3px 9px; border-radius: 3px; }
+.horizon-label { font-family: var(--font-serif); font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.25; }
+.horizon-card.recommended .horizon-label { color: var(--accent-deep); }
+.horizon-mode { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; font-weight: 500; }
+.horizon-card.recommended .horizon-mode { color: var(--accent); }
+.horizon-q { font-family: var(--font-serif); font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1.05; margin-bottom: 4px; }
+.horizon-q small { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 3px; font-family: var(--font-mono); }
+.horizon-power { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent-deep); font-weight: 500; margin-bottom: 12px; }
+.horizon-note { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); }
+.horizon-explainer { font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; padding: 14px 18px; background: var(--bg-alt); border-left: 3px solid var(--line); border-radius: 0 4px 4px 0; margin-top: 4px; }
+.horizon-explainer strong { color: var(--ink); font-weight: 600; }
+
+/* AI explanation block */
+.ai-explanation { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 20px 24px; border-radius: 0 6px 6px 0; margin-bottom: 8px; }
+.ai-explanation .ai-label { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-deep); margin-bottom: 12px; font-weight: 600; }
+.ai-explanation p { font-size: 14px; line-height: 1.65; color: var(--ink); margin-bottom: 10px; }
+.ai-explanation p:last-child { margin-bottom: 0; }
+
+/* ============ EXPLAINER SECTIONS ============ */
+.explainer-wrap { background: var(--bg-alt); border-top: 1px solid var(--line); padding: 60px 0; }
+.explainer-section { padding: 40px var(--gutter); max-width: var(--max); margin: 0 auto; }
+.explainer-section + .explainer-section { border-top: 1px solid var(--line); }
+.sec-header { margin-bottom: 36px; }
+.sec-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; color: var(--accent); margin-bottom: 16px; }
+.explainer-section h2 { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 44px); font-weight: 600; letter-spacing: -0.022em; line-height: 1.1; color: var(--ink); margin-bottom: 16px; }
+.explainer-section h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
+.explainer-section .lead { font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
+.explainer-section .lead strong { font-weight: 600; color: var(--ink); }
+.explainer-section .lead em { font-style: italic; }
+
+.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 24px; }
+.how-step { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 26px 22px; }
+.how-step .step-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+.how-step h4 { font-family: var(--font-serif); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--ink); }
+.how-step p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; font-family: var(--font-sans); }
+
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+.tech-block { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
+.tech-block .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; display: block; margin-bottom: 12px; }
+.tech-block p { font-size: 14px; color: var(--ink-soft); line-height: 1.65; font-family: var(--font-sans); }
+.tech-block strong { font-weight: 600; color: var(--ink); }
+
+/* ============ FOOTER (matches homepage) ============ */
+footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-top: 4px solid var(--accent); }
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 56px; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter) 48px; }
+.footer-inner .footer-tagline { font-family: var(--font-serif); font-size: clamp(28px, 3.5vw, 44px); font-weight: 600; letter-spacing: -0.022em; line-height: 1.1; max-width: 600px; color: var(--bg); margin-bottom: 22px; }
+.footer-inner .footer-tagline em { color: #7fc9a0; font-style: italic; font-weight: 500; }
+.footer-inner h4 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; color: #8aa295; font-weight: 500; }
+.footer-inner p { font-size: 14px; line-height: 1.65; color: rgba(247, 245, 240, 0.75); max-width: 540px; }
+.footer-inner ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-inner a { font-size: 14px; color: var(--bg); }
+.footer-inner a:hover { color: #7fc9a0; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 24px var(--gutter) 0; max-width: var(--max); margin: 0 auto; border-top: 1px solid #2d3d33; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #8aa295; }
+
+/* ============ RESPONSIVE: tablet (≤1024px) ============ */
+@media (max-width: 1024px) {
+  .workspace { grid-template-columns: 1fr; }
+  .map-wrap, #map { min-height: 380px; }
+  .how-grid { grid-template-columns: repeat(2, 1fr); }
+  .horizon-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-headline { grid-template-columns: repeat(3, 1fr); }
+  .detail-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ============ RESPONSIVE: large mobile (≤768px) ============ */
+@media (max-width: 768px) {
+  :root { --gutter: 22px; }
+  .nav-toggle { display: inline-flex; }
+  #primary-nav { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+  #primary-nav.open { max-height: 320px; padding: 8px 0 16px; }
+  #primary-nav ul { display: flex; flex-direction: column; gap: 0; padding: 0 var(--gutter); }
+  #primary-nav li { border-bottom: 1px solid var(--line); }
+  #primary-nav li:last-child { border-bottom: none; }
+  #primary-nav a { display: block; padding: 14px 0; font-size: 13px; }
+  .nav-inner { position: relative; }
+  .hero { padding: 48px var(--gutter) 24px; }
+  .hero h1 { line-height: 1.05; }
+  .hero p { font-size: 15.5px; }
+  .info-callout { padding: 16px 18px; font-size: 13.5px; }
+  .map-panel-header { padding: 18px 20px 0; }
+  .form-panel { padding: 20px 22px; }
+  .form-panel h2 { font-size: 20px; }
+  .map-wrap, #map { min-height: 340px; }
+  .map-legend { padding: 8px 10px; min-width: 170px; }
+  .map-legend .bar { height: 8px; }
+  .result-card { padding: 28px 24px; }
+  .result-card h2 { font-size: 26px; }
+  .result-headline { grid-template-columns: 1fr; gap: 12px; }
+  .result-headline .cell .num { font-size: 30px; }
+  .result-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .btn-pdf { width: auto; }
+  .cost-table td { padding: 9px 10px; font-size: 13px; }
+  .cost-table .cost-range { display: block; margin-left: 0; margin-top: 2px; }
+  .detail-grid { grid-template-columns: 1fr; gap: 10px; }
+  .horizon-grid { grid-template-columns: 1fr; gap: 12px; }
+  .horizon-card { padding: 18px 20px; }
+  .ai-explanation { padding: 16px 20px; }
+  .how-grid { grid-template-columns: 1fr; gap: 14px; }
+  .tech-grid { grid-template-columns: 1fr; gap: 14px; }
+  section.explainer-section { padding: 36px var(--gutter); }
+  .sec-header h2 { font-size: clamp(26px, 6vw, 36px); }
+}
+
+/* ============ RESPONSIVE: small mobile (≤520px) ============ */
+@media (max-width: 520px) {
+  :root { --gutter: 18px; }
+  .nav-github span { display: none; }
+  .nav-github { padding: 7px 10px; }
+  .hero { padding: 36px var(--gutter) 20px; }
+  .hero .eyebrow { font-size: 11px; margin-bottom: 18px; }
+  .hero h1 { margin-bottom: 18px; }
+  .hero p { font-size: 14.5px; }
+  .hero .audience { font-size: 13px; }
+  .tech-tag { font-size: 11px; padding: 6px 11px; }
+  .form-row.two { grid-template-columns: 1fr; }
+  .form-row input, .form-row select { font-size: 13.5px; padding: 9px 11px; }
+  .form-actions { flex-direction: column; }
+  .form-actions .btn { width: 100%; justify-content: center; }
+  .map-wrap, #map { min-height: 300px; }
+  .map-legend { padding: 7px 9px; min-width: 150px; }
+  .map-legend h4 { font-size: 9px; }
+  .map-legend .vals { font-size: 9px; }
+  .site-readout { font-size: 12px; padding: 10px 13px; }
+  .result-card { padding: 24px 20px; }
+  .result-card h2 { font-size: 22px; line-height: 1.2; }
+  .result-card .site-tag { font-size: 11px; }
+  .result-headline .cell { padding: 16px 18px; }
+  .result-headline .cell .num { font-size: 26px; }
+  .horizon-card { padding: 16px 18px; }
+  .horizon-q { font-size: 22px; }
+  .ai-explanation { padding: 14px 16px; }
+  .ai-explanation p { font-size: 13px; }
+  .footer-bottom { flex-direction: column; gap: 12px; align-items: flex-start; padding-top: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="nav-inner">
+    <div class="logo">Vaibhav <span class="logo-accent">Jaiswal</span></div>
+    <nav id="primary-nav">
+      <ul>
+        <li><a href="https://vaibhavjgeo.vercel.app/">Home</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/thesis/">Master Thesis</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/thesis/map-fullscreen.html">Map Explorer</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/bhe/" class="active">BHE Recommender</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/geochat/">GeoChat</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="https://github.com/vaibhavjgeo" target="_blank" rel="noopener" class="nav-github">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      <span>GitHub</span>
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="eyebrow">→ Site-specific geothermal feasibility</div>
+    <h1>Should you drill a <em>borehole</em> here?</h1>
+    <p>Click a site on the map of Germany to read the sustainable geothermal extraction rate at that exact location, then get a depth, output and cost estimate. Powered by real thesis data, 5 km resolution.</p>
+    <p class="audience">For homeowners considering geothermal, students learning the field, or anyone curious about a specific site in Germany.</p>
+    <span class="tech-tag">→ Built with Vercel serverless · Node.js · Leaflet · jsPDF · Google Gemini · <a href="https://github.com/vaibhavjgeo/bhe-recommender" target="_blank" rel="noopener">source on GitHub</a></span>
+  </section>
+
+  <div class="info-callout-wrap">
+    <div class="info-callout">
+      First-pass estimate, not engineering advice. Values come from CMIP6 ensemble averages at 5 km resolution; local geology, groundwater, and permits will shift the real numbers. See the methodology and disclaimer in any generated PDF report.
+    </div>
+  </div>
+
+  <section class="workspace">
+
+    <!-- ============ MAP PANEL ============ -->
+    <div class="map-panel">
+      <div class="map-panel-header">
+        <h2>Pick a site</h2>
+        <div class="sub">Click any point in Germany. The map shows sustainable heat extraction (W/m) under your chosen scenario and statistic.</div>
+      </div>
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="click-prompt" id="click-prompt">Click anywhere on Germany to start</div>
+        <div class="map-loading active" id="map-loading">
+          <div class="spinner"></div>
+          <span>Loading map data...</span>
+        </div>
+        <div class="map-legend">
+          <h4>Sustainable heat extraction (W/m)</h4>
+          <div class="bar"></div>
+          <div class="vals"><span>40</span><span>45</span><span>50</span><span>55</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ FORM PANEL ============ -->
+    <div class="form-panel">
+      <h2>Configure & calculate</h2>
+      <div class="sub">Map click sets the location. Adjust the rest below.</div>
+
+      <div class="site-readout empty" id="site-readout">
+        <span class="label">Selected site</span>
+        No site selected yet. Click on the map.
+      </div>
+
+      <form id="recommend-form" autocomplete="off">
+
+        <div class="form-row two">
+          <div>
+            <label for="scenario">Scenario</label>
+            <select id="scenario">
+              <option value="ssp585" selected>SSP 5-8.5</option>
+              <option value="ssp245">SSP 2-4.5</option>
+            </select>
+          </div>
+          <div>
+            <label for="statistic">Statistic</label>
+            <select id="statistic">
+              <option value="mean" selected>Ensemble mean</option>
+              <option value="p50">Ensemble median (P50)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="demand">Heating demand (kW)</label>
+          <input type="number" id="demand" min="1" max="100" step="0.5" placeholder="e.g. 8" required>
+          <div class="hint">Typical insulated home: 6-10 kW. Older or larger: 12-20 kW.</div>
+        </div>
+
+        <div class="form-row">
+          <label for="budget">Budget (EUR, optional)</label>
+          <input type="number" id="budget" min="0" step="500" placeholder="e.g. 25000">
+        </div>
+
+        <div class="form-row">
+          <label>System will provide</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="use-heating" checked disabled>
+              Heating (always)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="use-cooling">
+              Cooling
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="use-hotwater">
+              Hot water
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submit-btn" disabled>
+            Calculate
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </button>
+          <button type="button" class="btn btn-ghost" id="reset-btn">Reset</button>
+        </div>
+
+      </form>
+    </div>
+
+  </section>
+
+  <div id="result-container"></div>
+
+</main>
+
+<!-- ============ EXPLAINER SECTIONS ============ -->
+<div class="explainer-wrap">
+
+  <section class="explainer-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">§ About this project</div>
+      <h2>What is the <em>BHE Recommender</em>?</h2>
+      <p class="lead">An interactive feasibility tool for shallow geothermal heat pumps in Germany. Click anywhere on the map to see the sustainable heat-extraction rate at that exact location, then get a recommended borehole depth, expected sustainable output, full cost breakdown, and a downloadable PDF report. All values are grounded in my Master's thesis at KIT - 5 km resolution data from 8 CMIP6 climate models under two emission scenarios.</p>
+    </div>
+  </section>
+
+  <section class="explainer-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">§ How it works</div>
+      <h2>From a map click to a <em>complete report</em>.</h2>
+      <p class="lead">Four steps from picking a site to downloading a multi-page PDF for any location in Germany.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="step-num">→ 01 / PICK</div>
+        <h4>Click a site</h4>
+        <p>Click anywhere on the map. The tool reads the sustainable heat-extraction rate (W/m) from the thesis raster at that pixel.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">→ 02 / CONFIGURE</div>
+        <h4>Set parameters</h4>
+        <p>Enter heating demand (kW), optional budget, and whether you want cooling or hot water on top of heating.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">→ 03 / CALCULATE</div>
+        <h4>Get the numbers</h4>
+        <p>The backend computes recommended depth, sustainable output, and a full German-market cost breakdown.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">→ 04 / EXPORT</div>
+        <h4>Download PDF</h4>
+        <p>Gemini writes a personalized site interpretation. Download the full multi-page report for your records.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="explainer-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">§ Tech stack</div>
+      <h2>Real data, <em>real tools</em>.</h2>
+      <p class="lead">Pre-computed thesis data + serverless compute + AI interpretation, all running for free.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-block">
+        <span class="label">Data</span>
+        <p>4 pre-computed JSON files from my thesis (2 SSP scenarios × 2 ensemble statistics), 5 km resolution across Germany.</p>
+      </div>
+      <div class="tech-block">
+        <span class="label">Frontend</span>
+        <p>Vanilla HTML / CSS / JS, Leaflet maps with custom pixel rendering via chroma-js, jsPDF for client-side reports.</p>
+      </div>
+      <div class="tech-block">
+        <span class="label">Backend & AI</span>
+        <p>Vercel serverless functions handle depth and cost calculations. Google Gemini writes site interpretations.</p>
+      </div>
+      <div class="tech-block">
+        <span class="label">Hosting</span>
+        <p>Vercel free tier with GitHub auto-deploy. Total infrastructure cost: <strong>€0 / month</strong>.</p>
+      </div>
+      <div class="tech-block">
+        <span class="label">Development</span>
+        <p>AI-pair-programming with <strong>Anthropic Claude</strong>, ChatGPT, and GitHub Copilot. Architecture and review by me.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="explainer-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">§ How this was built</div>
+      <h2>Built with <em>AI as a pair-programmer</em>.</h2>
+      <p class="lead"><strong>Anthropic Claude</strong> was my primary pair-programmer for the Leaflet click-to-query interaction, the cost model logic, the jsPDF client-side report generation, and the Vercel serverless function for AI interpretation. <strong>ChatGPT</strong> helped iterate on the cost model assumptions (German market price ranges). <strong>GitHub Copilot</strong> handled inline suggestions. I designed the product idea (turning thesis data into a homeowner-facing tool), the cost model structure, the disclaimer wording, the choice of client-side PDF generation, and I reviewed every line before deployment. The thesis data underlying this app was produced by my Python notebook (also AI-assisted). This tool turns that data into something a homeowner can use.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-tagline">Let's <em>estimate</em> before you drill.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="https://vaibhavjgeo.vercel.app/">Home</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/geochat/">GeoChat</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/bhe/">BHE Recommender</a></li>
+        <li><a href="https://vaibhavjgeo.vercel.app/thesis/">Master Thesis</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:vaibhavjaiswal1234@gmail.com">Email</a></li>
+        <li><a href="https://github.com/vaibhavjgeo" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://calendly.com/vaibhavjaiswal1234/30min" target="_blank" rel="noopener">Book a 30-min call</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>Vaibhav Jaiswal · Karlsruhe, DE</div>
+    <div>© 2026 · Built with care · Vercel</div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/chroma-js@2.4.2/chroma.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  // ============ DATA LOOKUP CONFIG ============
+  // We use the ql_UrbanRenew_max_100yr layer (sustainable extraction over 100 years)
+  const LAYER_NAME = 'ql_UrbanRenew_max_100yr';
+
+  // 4 JSON files (2 scenarios x 2 statistics)
+  const DATA_FILES = {
+    ssp585_mean: 'data/ssp585_mean.json',
+    ssp585_p50:  'data/ssp585_p50.json',
+    ssp245_mean: 'data/ssp245_mean.json',
+    ssp245_p50:  'data/ssp245_p50.json',
+  };
+
+  // Cached datasets after first load
+  const dataCache = {};
+
+  // Current selection
+  let currentDataset = null;
+  let currentMarker = null;
+  let currentClick = null;  // { lat, lng, q }
+  let mapOverlay = null;    // The colored raster overlay
+  let germanyLayer = null;
+  let lastResult = null;    // last successful calculation result (for PDF generation)
+
+  // Color scale (viridis - matches thesis page default)
+  const COLORS = ['#440154','#482878','#3e4a89','#31688e','#26828e','#1f9e89','#35b779','#6dcd59','#b4dd2c','#fde725'];
+  const Q_RANGE = { min: 40, max: 55 };
+
+  // ============ LEAFLET MAP ============
+  const map = L.map('map', {
+    center: [51.2, 10.4],
+    zoom: 5,
+    minZoom: 5,
+    maxZoom: 12,
+  });
+
+  // Fit Germany inside the panel on initial load (bounds roughly cover Germany's extent)
+  map.fitBounds([[47.3, 5.9], [55.1, 15.0]], { padding: [10, 10] });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19,
+  }).addTo(map);
+
+  // Germany boundary - try multiple sources for reliability
+  async function loadGermanyBoundary() {
+    const sources = [
+      'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
+      'https://datahub.io/core/geo-countries/r/countries.geojson',
+      'https://cdn.jsdelivr.net/gh/datasets/geo-countries@master/data/countries.geojson'
+    ];
+    for (const url of sources) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) continue;
+        const data = await r.json();
+        const germany = data.features.find(f =>
+          f.properties.ADMIN === 'Germany' ||
+          f.properties.NAME === 'Germany' ||
+          f.properties.name === 'Germany' ||
+          f.properties.ISO_A2 === 'DE'
+        );
+        if (germany) {
+          germanyLayer = L.geoJSON(germany, {
+            style: { color: '#1a1612', weight: 2.5, fill: false, opacity: 0.9 },
+            interactive: false,
+          }).addTo(map);
+          if (mapOverlay) germanyLayer.bringToFront();
+          if (currentMarker) currentMarker.bringToFront();
+          console.log('Germany boundary loaded from:', url);
+          return;
+        }
+      } catch (e) {
+        console.warn('Boundary source failed:', url, e);
+      }
+    }
+    console.warn('All Germany boundary sources failed');
+  }
+
+  // ============ DATA LOADING ============
+  async function loadDataset(key) {
+    if (dataCache[key]) return dataCache[key];
+    const url = DATA_FILES[key];
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`Failed to load ${url} (${r.status})`);
+    const data = await r.json();
+    dataCache[key] = data;
+    return data;
+  }
+
+  function getCurrentKey() {
+    const scenario = document.getElementById('scenario').value;
+    const statistic = document.getElementById('statistic').value;
+    return `${scenario}_${statistic}`;
+  }
+
+  // ============ RASTER RENDERING ============
+  function renderRaster(dataset) {
+    const arr = dataset.layers[LAYER_NAME];
+    if (!arr) {
+      console.error(`Layer ${LAYER_NAME} not in dataset`);
+      return null;
+    }
+    const rows = arr.length;
+    const cols = arr[0].length;
+    const scale = chroma.scale(COLORS).domain([Q_RANGE.min, Q_RANGE.max]);
+
+    // Small native canvas
+    const small = document.createElement('canvas');
+    small.width = cols; small.height = rows;
+    const sCtx = small.getContext('2d');
+    const imgData = sCtx.createImageData(cols, rows);
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const v = arr[y][x];
+        const i = (y * cols + x) * 4;
+        if (v === null || v === undefined || Number.isNaN(v) || !Number.isFinite(v)) {
+          imgData.data[i] = 0; imgData.data[i+1] = 0; imgData.data[i+2] = 0; imgData.data[i+3] = 0;
+        } else {
+          const c = scale(v).rgb();
+          imgData.data[i] = c[0]; imgData.data[i+1] = c[1]; imgData.data[i+2] = c[2]; imgData.data[i+3] = 180;
+        }
+      }
+    }
+    sCtx.putImageData(imgData, 0, 0);
+
+    // Upscale 50x without smoothing
+    const SCALE = 50;
+    const big = document.createElement('canvas');
+    big.width = cols * SCALE; big.height = rows * SCALE;
+    const bCtx = big.getContext('2d');
+    bCtx.imageSmoothingEnabled = false;
+    bCtx.drawImage(small, 0, 0, big.width, big.height);
+    return big.toDataURL();
+  }
+
+  async function refreshOverlay() {
+    showMapLoading(true);
+    try {
+      const key = getCurrentKey();
+      const dataset = await loadDataset(key);
+      currentDataset = dataset;
+
+      const url = renderRaster(dataset);
+      const e = dataset.extent;
+      const bounds = [[e.ymin, e.xmin], [e.ymax, e.xmax]];
+
+      if (mapOverlay) map.removeLayer(mapOverlay);
+      if (url) {
+        mapOverlay = L.imageOverlay(url, bounds, { opacity: 0.85 });
+        mapOverlay.addTo(map);
+      }
+      if (germanyLayer) germanyLayer.bringToFront();
+      if (currentMarker) currentMarker.bringToFront();
+
+      // If a click was previously made, refresh its q value from new dataset
+      if (currentClick) {
+        const q = lookupValue(dataset, currentClick.lat, currentClick.lng, LAYER_NAME);
+        const q50_dep = lookupValue(dataset, currentClick.lat, currentClick.lng, 'ql_Urban_50yr');
+        const q50_sus = lookupValue(dataset, currentClick.lat, currentClick.lng, 'ql_UrbanRenew_50yr');
+        if (q !== null) {
+          currentClick.q = q;
+          currentClick.q_all = {
+            q_50_depleting: q50_dep,
+            q_50_sustainable: q50_sus,
+            q_100_sustainable: q,
+          };
+          updateSiteReadout();
+        }
+      }
+    } catch (err) {
+      console.error('refreshOverlay error:', err);
+    } finally {
+      showMapLoading(false);
+    }
+  }
+
+  function showMapLoading(active) {
+    const el = document.getElementById('map-loading');
+    if (active) el.classList.add('active');
+    else el.classList.remove('active');
+  }
+
+  // ============ PIXEL LOOKUP ============
+  function lookupValue(dataset, lat, lng, layerName) {
+    const layer = layerName || LAYER_NAME;
+    const arr = dataset.layers[layer];
+    if (!arr) return null;
+    const e = dataset.extent;
+    const cols = dataset.shape.cols;
+    const rows = dataset.shape.rows;
+    const pw = (e.xmax - e.xmin) / cols;
+    const ph = (e.ymax - e.ymin) / rows;
+    const x = Math.floor((lng - e.xmin) / pw);
+    const y = Math.floor((e.ymax - lat) / ph);
+    if (x < 0 || y < 0 || x >= cols || y >= rows) return null;
+    const v = arr[y]?.[x];
+    if (v === null || v === undefined || Number.isNaN(v) || !Number.isFinite(v)) return null;
+    return Math.round(v * 100) / 100;
+  }
+
+  // ============ MAP CLICK HANDLER ============
+  map.on('click', function (e) {
+    if (!currentDataset) return;
+    const { lat, lng } = e.latlng;
+    const q = lookupValue(currentDataset, lat, lng, LAYER_NAME);
+
+    if (q === null) {
+      // Outside data extent
+      const p = L.popup()
+        .setLatLng(e.latlng)
+        .setContent('<strong>No data here.</strong><br>Please click somewhere inside Germany where data is available.')
+        .openOn(map);
+      return;
+    }
+
+    // Also look up the other two time horizons at the same pixel
+    const q50_depleting = lookupValue(currentDataset, lat, lng, 'ql_Urban_50yr');
+    const q50_sustainable = lookupValue(currentDataset, lat, lng, 'ql_UrbanRenew_50yr');
+
+    // Place / move marker
+    if (currentMarker) {
+      currentMarker.setLatLng(e.latlng);
+    } else {
+      const icon = L.divIcon({
+        className: 'site-marker',
+        html: '<div style="width:18px;height:18px;border:3px solid #b8501e;background:#1a1612;border-radius:50%;box-shadow:0 0 0 3px rgba(184,80,30,0.3);"></div>',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+      currentMarker = L.marker(e.latlng, { icon }).addTo(map);
+    }
+
+    currentClick = {
+      lat, lng, q,
+      q_all: {
+        q_50_depleting: q50_depleting,
+        q_50_sustainable: q50_sustainable,
+        q_100_sustainable: q,
+      }
+    };
+    updateSiteReadout();
+
+    // Hide the "click anywhere" prompt
+    document.getElementById('click-prompt').classList.add('hidden');
+
+    // Enable submit button
+    document.getElementById('submit-btn').disabled = false;
+  });
+
+  // ============ SITE READOUT ============
+  function updateSiteReadout() {
+    const readout = document.getElementById('site-readout');
+    if (!currentClick) {
+      readout.classList.add('empty');
+      readout.innerHTML = '<span class="label">Selected site</span>No site selected yet. Click on the map.';
+      return;
+    }
+    readout.classList.remove('empty');
+    const { lat, lng, q } = currentClick;
+    const yieldText = q >= 47 ? 'high yield' : q >= 44 ? 'medium yield' : 'low yield';
+    readout.innerHTML = `
+      <span class="label">Selected site (${yieldText})</span>
+      <div class="coords">${lat.toFixed(3)}°N, ${lng.toFixed(3)}°E</div>
+      <div class="yield">${q.toFixed(2)} <small>W/m sustainable</small></div>
+    `;
+  }
+
+  // ============ FORM SUBMIT ============
+  const form = document.getElementById('recommend-form');
+  const resultContainer = document.getElementById('result-container');
+  const submitBtn = document.getElementById('submit-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    document.getElementById('scenario').value = 'ssp585';
+    document.getElementById('statistic').value = 'mean';
+    document.getElementById('use-heating').checked = true;
+    if (currentMarker) {
+      map.removeLayer(currentMarker);
+      currentMarker = null;
+    }
+    currentClick = null;
+    updateSiteReadout();
+    submitBtn.disabled = true;
+    document.getElementById('click-prompt').classList.remove('hidden');
+    resultContainer.innerHTML = '';
+    refreshOverlay();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentClick) {
+      showError('Click a site on the map first.');
+      return;
+    }
+
+    const demand_kW = parseFloat(document.getElementById('demand').value);
+    const budgetRaw = document.getElementById('budget').value;
+    const budget_eur = budgetRaw ? parseFloat(budgetRaw) : null;
+    const scenario = document.getElementById('scenario').value;
+    const statistic = document.getElementById('statistic').value;
+    const useCases = {
+      cooling: document.getElementById('use-cooling').checked,
+      hotWater: document.getElementById('use-hotwater').checked,
+    };
+
+    if (!demand_kW) {
+      showError('Please enter heating demand.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px;"><span class="spinner" style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;"></span> Calculating...</span>';
+
+    try {
+      const resp = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          q_lookup: currentClick.q,
+          q_all: currentClick.q_all,
+          location: { lat: currentClick.lat, lng: currentClick.lng },
+          demand_kW,
+          budget_eur,
+          useCases,
+          scenario,
+          statistic,
+        }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        showError(err.error || 'Calculation failed. Please try again.');
+        return;
+      }
+
+      const data = await resp.json();
+      renderResult(data);
+    } catch (err) {
+      console.error(err);
+      showError('Network error. Please check your connection and try again.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Calculate <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>';
+    }
+  });
+
+  // ============ RESULT RENDERING ============
+  function showError(msg) {
+    resultContainer.innerHTML = `<div class="error-banner">${escapeHtml(msg)}</div>`;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[c]);
+  }
+
+  function fmt(n) { return n.toLocaleString('en-US'); }
+
+  function renderHorizonComparison(r) {
+    const horizons = r.horizons || [];
+    if (horizons.length < 2) return '';  // need at least 2 to compare
+
+    const cards = horizons.map(h => `
+      <div class="horizon-card ${h.recommended ? 'recommended' : ''}">
+        ${h.recommended ? '<span class="recommended-tag">Recommended</span>' : ''}
+        <div class="horizon-label">${escapeHtml(h.label)}</div>
+        <div class="horizon-mode">${h.mode === 'sustainable' ? 'Sustainable mode' : 'Depleting mode'}</div>
+        <div class="horizon-q">${h.q}<small>W/m</small></div>
+        <div class="horizon-power">~${h.power_kW} kW at ${r.depth_m} m</div>
+        <div class="horizon-note">${escapeHtml(h.note)}</div>
+      </div>
+    `).join('');
+
+    return `
+      <h3>Time-horizon comparison</h3>
+      <p style="font-size: 0.88rem; color: var(--ink-faint); margin: 0 0 12px; line-height: 1.55;">
+        What the same <strong>${r.depth_m} m</strong> borehole would deliver at this site under different operating strategies. The recommendation above uses the 100-year sustainable value.
+      </p>
+      <div class="horizon-grid">
+        ${cards}
+      </div>
+      <div class="horizon-explainer">
+        <strong>Depleting:</strong> higher initial output but the ground cools over time and the system degrades. <strong>Sustainable:</strong> ground temperature stays stable, system delivers the same output indefinitely. The 100-year sustainable value is what a real BHE installation should plan for.
+      </div>
+    `;
+  }
+
+  function renderResult(data) {
+    const r = data.recommendation;
+    const s = data.site;
+    const c = r.cost;
+    const bs = r.budget_status;
+    const scenarioLabel = s.scenario_used === 'ssp585' ? 'SSP 5-8.5 high emissions' : 'SSP 2-4.5 moderate emissions';
+    const statLabel = s.statistic_used === 'p50' ? 'ensemble median (P50)' : 'ensemble mean';
+
+    let budgetHTML = '';
+    if (bs) {
+      if (bs.fits) {
+        budgetHTML = `<div class="budget-banner fits">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Within budget. Estimated cost is EUR ${fmt(c.total)}, leaving roughly EUR ${fmt(bs.delta)} headroom.</span>
+        </div>`;
+      } else {
+        budgetHTML = `<div class="budget-banner over">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Over budget by approximately EUR ${fmt(Math.abs(bs.delta))}. Consider phasing the project or reducing demand.</span>
+        </div>`;
+      }
+    }
+
+    const html = `
+      <div class="result-card" id="result-card">
+        <div class="result-header">
+          <div class="eyebrow">→ Recommendation for your site</div>
+          <h2>Drill <em>${r.depth_m} m</em> for ${r.power_kW} kW sustainable</h2>
+          <div class="site-tag">${s.coordinates.lat.toFixed(3)}°N, ${s.coordinates.lng.toFixed(3)}°E · ${s.q_used} W/m · ${s.yield_label} · ${scenarioLabel} · ${statLabel}</div>
+        </div>
+
+        <div class="result-actions">
+          <span class="actions-label">→ Take it with you</span>
+          <button class="btn-pdf" id="btn-download-pdf">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF report
+          </button>
+        </div>
+
+        <div class="result-headline">
+          <div class="cell">
+            <div class="num">${r.depth_m}<small> m</small></div>
+            <div class="lbl">Recommended depth</div>
+          </div>
+          <div class="cell">
+            <div class="num">${r.power_kW}<small> kW</small></div>
+            <div class="lbl">Sustainable output</div>
+          </div>
+          <div class="cell">
+            <div class="num">€${fmt(c.total)}</div>
+            <div class="lbl">Total estimated cost</div>
+          </div>
+        </div>
+
+        <div class="result-body">
+
+          <h3>Cost breakdown</h3>
+          <table class="cost-table">
+            <tr>
+              <td>Drilling (${r.depth_m} m at €${Math.round(c.drilling / r.depth_m)} / m)</td>
+              <td>€${fmt(c.drilling)} <span class="cost-range">(range €${fmt(c.drilling_range[0])} - €${fmt(c.drilling_range[1])})</span></td>
+            </tr>
+            <tr>
+              <td>Heat pump unit</td>
+              <td>€${fmt(c.heat_pump)}</td>
+            </tr>
+            ${c.cooling_addon > 0 ? `<tr><td>Reversible cooling add-on</td><td>€${fmt(c.cooling_addon)}</td></tr>` : ''}
+            ${c.hot_water_addon > 0 ? `<tr><td>Domestic hot water integration</td><td>€${fmt(c.hot_water_addon)}</td></tr>` : ''}
+            <tr>
+              <td>Permits, installation, system connection</td>
+              <td>€${fmt(c.ancillary)}</td>
+            </tr>
+            <tr class="total">
+              <td>Total estimated</td>
+              <td>€${fmt(c.total)}</td>
+            </tr>
+          </table>
+
+          ${budgetHTML}
+
+          <h3>Site details</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="lbl">Sustainable extraction rate</span>
+              <span class="val">${s.q_used} W/m</span>
+            </div>
+            <div class="detail-item">
+              <span class="lbl">Yield class</span>
+              <span class="val">${s.yield_label}</span>
+            </div>
+            <div class="detail-item">
+              <span class="lbl">Cost per kW capacity</span>
+              <span class="val">€${fmt(c.cost_per_kW)} / kW</span>
+            </div>
+            <div class="detail-item">
+              <span class="lbl">Data source</span>
+              <span class="val">${statLabel}</span>
+            </div>
+          </div>
+
+          ${renderHorizonComparison(r)}
+
+          <h3>What this means for your site</h3>
+          <div class="ai-explanation">
+            <span class="ai-label">AI interpretation</span>
+            ${escapeHtml(data.ai_explanation).split('\n\n').map(p => `<p>${p}</p>`).join('')}
+          </div>
+
+          <h3>Site note</h3>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); line-height: 1.65; margin: 0;">${escapeHtml(s.yield_note)}</p>
+
+        </div>
+      </div>
+    `;
+
+    resultContainer.innerHTML = html;
+
+    // Store result data for PDF generation
+    lastResult = data;
+
+    // Wire up the PDF download button
+    const pdfBtn = document.getElementById('btn-download-pdf');
+    if (pdfBtn) {
+      pdfBtn.addEventListener('click', () => generatePDF(data));
+    }
+
+    setTimeout(() => {
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+
+  // ============ SCENARIO/STATISTIC CHANGE HANDLERS ============
+  document.getElementById('scenario').addEventListener('change', refreshOverlay);
+  document.getElementById('statistic').addEventListener('change', refreshOverlay);
+
+  // ============ PDF GENERATION ============
+  async function generatePDF(data) {
+    const pdfBtn = document.getElementById('btn-download-pdf');
+    if (!pdfBtn) return;
+
+    // Disable button + show spinner
+    const originalHtml = pdfBtn.innerHTML;
+    pdfBtn.disabled = true;
+    pdfBtn.innerHTML = '<span class="pdf-spinner"></span> Generating PDF...';
+
+    try {
+      // No map capture - PDF is text-only for cleaner output and faster generation
+      const mapImage = null;
+
+      // Build the PDF using jsPDF
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
+      });
+
+      buildPDFContent(doc, data, mapImage);
+
+      // Generate filename
+      const ts = new Date().toISOString().split('T')[0];
+      const lat = data.site.coordinates.lat.toFixed(2);
+      const lng = data.site.coordinates.lng.toFixed(2);
+      const filename = `BHE-report-${lat}N-${lng}E-${ts}.pdf`;
+
+      doc.save(filename);
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      alert('Sorry, PDF generation failed. Please try again or take a screenshot of the result.');
+    } finally {
+      pdfBtn.disabled = false;
+      pdfBtn.innerHTML = originalHtml;
+    }
+  }
+
+  async function captureMapImage() {
+    // Create a hidden offscreen map element with a square aspect ratio,
+    // center it on the user's clicked site, render the same data overlay
+    // and Germany boundary, then capture it. Destroy after. This is cleaner
+    // than fighting the live map's wide aspect ratio.
+    if (!currentClick) return null;
+
+    const hiddenDiv = document.createElement('div');
+    hiddenDiv.style.position = 'absolute';
+    hiddenDiv.style.left = '-10000px';
+    hiddenDiv.style.top = '0';
+    hiddenDiv.style.width = '600px';
+    hiddenDiv.style.height = '600px';
+    hiddenDiv.style.background = '#f1ebe1';
+    document.body.appendChild(hiddenDiv);
+
+    let result = null;
+    let tempMap = null;
+    try {
+      tempMap = L.map(hiddenDiv, {
+        zoomControl: false,
+        attributionControl: false,
+        fadeAnimation: false,
+        zoomAnimation: false,
+        markerZoomAnimation: false,
+      });
+
+      // Same basemap
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 19,
+      }).addTo(tempMap);
+
+      // Add Germany boundary if loaded
+      if (germanyLayer) {
+        const germanyData = germanyLayer.toGeoJSON();
+        L.geoJSON(germanyData, {
+          style: { color: '#1a1612', weight: 2, fill: false, opacity: 0.9 },
+          interactive: false,
+        }).addTo(tempMap);
+      }
+
+      // Note: we deliberately do NOT add the colored heat-extraction data overlay here.
+      // The data is summarized in the report numbers, and the rectangular raster
+      // extends past Germany's borders, which looks awkward in a printed PDF.
+
+      // Add the click marker
+      const icon = L.divIcon({
+        className: 'site-marker',
+        html: '<div style="width:18px;height:18px;border:3px solid #b8501e;background:#1a1612;border-radius:50%;box-shadow:0 0 0 3px rgba(184,80,30,0.3);"></div>',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+      L.marker([currentClick.lat, currentClick.lng], { icon }).addTo(tempMap);
+
+      // IMPORTANT: invalidateSize to make Leaflet recognize the 600x600 div dimensions
+      tempMap.invalidateSize();
+      // Fit the map to Germany's bounding box so we always see all of Germany
+      // with the marker positioned correctly within it
+      const germanyBounds = L.latLngBounds(
+        [47.27, 5.87],   // SW corner
+        [55.10, 15.05]   // NE corner
+      );
+      tempMap.fitBounds(germanyBounds, { padding: [10, 10], animate: false });
+
+      // Wait for tiles to load at the new view
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const canvas = await html2canvas(hiddenDiv, {
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        scale: 1.2,
+        backgroundColor: '#f1ebe1',
+      });
+
+      result = {
+        dataUrl: canvas.toDataURL('image/jpeg', 0.85),
+        width: canvas.width,
+        height: canvas.height,
+        aspect: canvas.width / canvas.height,
+      };
+    } catch (err) {
+      console.warn('Map capture failed:', err);
+    } finally {
+      if (tempMap) tempMap.remove();
+      document.body.removeChild(hiddenDiv);
+    }
+
+    return result;
+  }
+
+  function buildPDFContent(doc, data, mapImage) {
+    const r = data.recommendation;
+    const s = data.site;
+    const c = r.cost;
+    const horizons = r.horizons || [];
+
+    // Colors matching portfolio Forest theme
+    const COL_INK = [21, 32, 26];          // --ink #15201a (dark forest)
+    const COL_INK_SOFT = [45, 61, 51];     // --ink-soft #2d3d33
+    const COL_INK_FAINT = [107, 122, 114]; // --ink-faint #6b7a72
+    const COL_ACCENT = [45, 106, 79];      // --accent #2d6a4f (forest green)
+    const COL_ACCENT_DEEP = [31, 74, 55];  // --accent-deep #1f4a37
+    const COL_LINE = [221, 224, 216];      // --line #dde0d8
+    const COL_BG_ALT = [253, 252, 248];    // --bg-alt #fdfcf8 (cream)
+
+    const PAGE_W = 210;
+    const PAGE_H = 297;
+    const M_LEFT = 18;
+    const M_RIGHT = 18;
+    const CONTENT_W = PAGE_W - M_LEFT - M_RIGHT;
+
+    let y = 18;  // current vertical position
+
+    // -------- HEADER --------
+    doc.setFillColor(...COL_INK);
+    doc.rect(0, 0, PAGE_W, 38, 'F');
+
+    // Accent stripe at top
+    doc.setFillColor(...COL_ACCENT);
+    doc.rect(0, 0, PAGE_W, 2, 'F');
+
+    // Title
+    doc.setTextColor(250, 247, 242);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.text('BHE Drilling Site Recommendation', M_LEFT, 18);
+
+    // Subtitle
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(220, 210, 195);
+    const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    doc.text(`Generated by Vaibhav Jaiswal  ·  ${today}`, M_LEFT, 26);
+    doc.setFontSize(8);
+    doc.text('Grounded in MSc thesis research, KIT 2026  ·  vaibhavjgeo.vercel.app/bhe', M_LEFT, 32);
+
+    y = 50;
+
+    // -------- SITE SUMMARY BANNER --------
+    doc.setFillColor(...COL_BG_ALT);
+    doc.rect(M_LEFT, y, CONTENT_W, 18, 'F');
+    doc.setDrawColor(...COL_ACCENT);
+    doc.setLineWidth(1);
+    doc.line(M_LEFT, y, M_LEFT, y + 18);
+
+    doc.setTextColor(...COL_ACCENT);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.text('SITE LOCATION', M_LEFT + 4, y + 5);
+
+    doc.setTextColor(...COL_INK);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    const coordsText = `${s.coordinates.lat.toFixed(4)}°N, ${s.coordinates.lng.toFixed(4)}°E`;
+    doc.text(coordsText, M_LEFT + 4, y + 11);
+
+    doc.setFontSize(8);
+    doc.setTextColor(...COL_INK_SOFT);
+    const scenarioLabel = s.scenario_used === 'ssp585' ? 'SSP 5-8.5 high emissions' : 'SSP 2-4.5 moderate emissions';
+    const statLabel = s.statistic_used === 'p50' ? 'ensemble median (P50)' : 'ensemble mean';
+    doc.text(`${scenarioLabel}  ·  ${statLabel}  ·  ${s.yield_label}`, M_LEFT + 4, y + 16);
+
+    y += 24;
+
+    // -------- KEY NUMBERS (3 big values) --------
+    const numBoxW = CONTENT_W / 3;
+    const numBoxH = 26;
+
+    doc.setDrawColor(...COL_LINE);
+    doc.setLineWidth(0.3);
+    for (let i = 0; i < 3; i++) {
+      doc.rect(M_LEFT + i * numBoxW, y, numBoxW, numBoxH);
+    }
+
+    const numbers = [
+      { value: `${r.depth_m} m`, label: 'RECOMMENDED DEPTH' },
+      { value: `${r.power_kW} kW`, label: 'SUSTAINABLE OUTPUT' },
+      { value: `EUR ${c.total.toLocaleString('en-US')}`, label: 'TOTAL EST. COST' },
+    ];
+
+    numbers.forEach((n, i) => {
+      const cx = M_LEFT + i * numBoxW + numBoxW / 2;
+      doc.setTextColor(...COL_ACCENT);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text(n.value, cx, y + 12, { align: 'center' });
+      doc.setTextColor(...COL_INK_FAINT);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6.5);
+      doc.text(n.label, cx, y + 20, { align: 'center' });
+    });
+
+    y += numBoxH + 8;
+
+    // -------- SITE DETAILS (full width, no map) --------
+    doc.setTextColor(...COL_INK);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Site details', M_LEFT, y);
+    y += 7;
+
+    // 2x3 grid of detail items
+    const details = [
+      ['Sustainable extraction rate', `${s.q_used} W/m`],
+      ['Yield class', s.yield_label],
+      ['Cost per kW capacity', `EUR ${c.cost_per_kW.toLocaleString('en-US')} / kW`],
+      ['Climate scenario', scenarioLabel],
+      ['Ensemble statistic', statLabel],
+    ];
+
+    const detailColW = (CONTENT_W - 6) / 2;
+    const detailRowH = 13;
+    details.forEach((d, i) => {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      const dx = M_LEFT + col * (detailColW + 6);
+      const dy = y + row * detailRowH;
+
+      // Subtle background box
+      doc.setFillColor(...COL_BG_ALT);
+      doc.rect(dx, dy, detailColW, detailRowH - 2, 'F');
+
+      doc.setTextColor(...COL_INK_FAINT);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.text(d[0].toUpperCase(), dx + 3, dy + 4);
+
+      doc.setTextColor(...COL_INK);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text(d[1], dx + 3, dy + 9);
+    });
+
+    // Advance y past the grid
+    y += Math.ceil(details.length / 2) * detailRowH + 6;
+
+    // -------- COST BREAKDOWN --------
+    if (y > 220) { doc.addPage(); y = 20; }
+
+    doc.setTextColor(...COL_INK);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Cost breakdown', M_LEFT, y);
+    y += 6;
+
+    const costRows = [
+      [`Drilling (${r.depth_m} m at EUR ${Math.round(c.drilling / r.depth_m)}/m)`, `EUR ${c.drilling.toLocaleString('en-US')}`],
+      ['Heat pump unit', `EUR ${c.heat_pump.toLocaleString('en-US')}`],
+    ];
+    if (c.cooling_addon > 0) costRows.push(['Reversible cooling add-on', `EUR ${c.cooling_addon.toLocaleString('en-US')}`]);
+    if (c.hot_water_addon > 0) costRows.push(['Domestic hot water integration', `EUR ${c.hot_water_addon.toLocaleString('en-US')}`]);
+    costRows.push(['Permits, installation, system connection', `EUR ${c.ancillary.toLocaleString('en-US')}`]);
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    costRows.forEach(([label, value]) => {
+      doc.setTextColor(...COL_INK_SOFT);
+      doc.text(label, M_LEFT, y);
+      doc.setTextColor(...COL_INK);
+      doc.text(value, PAGE_W - M_RIGHT, y, { align: 'right' });
+      // Dashed line under
+      doc.setDrawColor(...COL_LINE);
+      doc.setLineDashPattern([0.5, 0.5], 0);
+      doc.line(M_LEFT, y + 1.5, PAGE_W - M_RIGHT, y + 1.5);
+      doc.setLineDashPattern([], 0);
+      y += 6;
+    });
+
+    // Total row
+    doc.setDrawColor(...COL_INK);
+    doc.setLineWidth(0.5);
+    doc.line(M_LEFT, y, PAGE_W - M_RIGHT, y);
+    y += 5;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...COL_INK);
+    doc.text('Total estimated', M_LEFT, y);
+    doc.text(`EUR ${c.total.toLocaleString('en-US')}`, PAGE_W - M_RIGHT, y, { align: 'right' });
+    y += 4;
+    doc.line(M_LEFT, y, PAGE_W - M_RIGHT, y);
+    y += 7;
+
+    // Drilling range note
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...COL_INK_FAINT);
+    doc.text(`Drilling cost range: EUR ${c.drilling_range[0].toLocaleString('en-US')} - ${c.drilling_range[1].toLocaleString('en-US')} (depends on local geology and contractor).`, M_LEFT, y);
+    y += 10;
+
+    // Budget banner (if any)
+    if (r.budget_status) {
+      const bs = r.budget_status;
+      const bannerColor = bs.fits ? [232, 241, 232] : [245, 232, 224];
+      const borderColor = bs.fits ? [45, 107, 58] : [165, 42, 42];
+      doc.setFillColor(...bannerColor);
+      doc.rect(M_LEFT, y, CONTENT_W, 10, 'F');
+      doc.setDrawColor(...borderColor);
+      doc.setLineWidth(0.8);
+      doc.line(M_LEFT, y, M_LEFT, y + 10);
+      doc.setTextColor(...borderColor);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text(bs.fits ? 'WITHIN BUDGET' : 'OVER BUDGET', M_LEFT + 3, y + 4);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(...COL_INK);
+      const budgetText = bs.fits
+        ? `Estimated cost EUR ${c.total.toLocaleString('en-US')}, your budget EUR ${bs.provided.toLocaleString('en-US')}. Headroom: EUR ${bs.delta.toLocaleString('en-US')}.`
+        : `Estimated cost EUR ${c.total.toLocaleString('en-US')} exceeds your budget of EUR ${bs.provided.toLocaleString('en-US')} by EUR ${Math.abs(bs.delta).toLocaleString('en-US')}.`;
+      doc.text(budgetText, M_LEFT + 3, y + 8);
+      y += 14;
+    }
+
+    // -------- TIME-HORIZON COMPARISON --------
+    if (horizons.length >= 2) {
+      if (y > 220) { doc.addPage(); y = 20; }
+
+      doc.setTextColor(...COL_INK);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('Time-horizon comparison', M_LEFT, y);
+      y += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(...COL_INK_FAINT);
+      const introLines = doc.splitTextToSize(
+        `What the same ${r.depth_m} m borehole would deliver at this site under different operating strategies. The recommendation uses the 100-year sustainable value.`,
+        CONTENT_W
+      );
+      doc.text(introLines, M_LEFT, y + 4);
+      y += introLines.length * 3.5 + 4;
+
+      // Horizon cards in a row
+      const cardW = (CONTENT_W - 6) / 3;
+      const cardH = 38;
+      horizons.forEach((h, i) => {
+        const cx = M_LEFT + i * (cardW + 3);
+        const isRec = h.recommended;
+
+        if (isRec) {
+          doc.setFillColor(227, 235, 229);  // --accent-soft #e3ebe5 (light forest green)
+          doc.rect(cx, y, cardW, cardH, 'F');
+          doc.setDrawColor(...COL_ACCENT);
+          doc.setLineWidth(0.8);
+        } else {
+          doc.setDrawColor(...COL_LINE);
+          doc.setLineWidth(0.3);
+        }
+        doc.rect(cx, y, cardW, cardH);
+
+        // Recommended tag
+        if (isRec) {
+          doc.setFillColor(...COL_ACCENT);
+          doc.rect(cx + cardW - 28, y - 2.5, 26, 4.5, 'F');
+          doc.setTextColor(250, 247, 242);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(6);
+          doc.text('RECOMMENDED', cx + cardW - 15, y + 0.5, { align: 'center' });
+        }
+
+        // Label
+        const labelCol = isRec ? COL_ACCENT : COL_INK_FAINT;
+        doc.setTextColor(labelCol[0], labelCol[1], labelCol[2]);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.text(h.label.toUpperCase(), cx + 3, y + 6);
+
+        // Mode
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(7);
+        doc.setTextColor(...COL_INK_FAINT);
+        doc.text(h.mode === 'sustainable' ? 'Sustainable mode' : 'Depleting mode', cx + 3, y + 10);
+
+        // q value
+        const qCol = isRec ? COL_ACCENT : COL_INK;
+        doc.setTextColor(qCol[0], qCol[1], qCol[2]);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        const qText = `${h.q}`;
+        doc.text(qText, cx + 3, y + 18);
+        // Measure the q text width and position W/m right after it with a small gap
+        const qWidth = doc.getTextWidth(qText);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(...COL_INK_FAINT);
+        doc.text('W/m', cx + 3 + qWidth + 1.5, y + 18);
+
+        // Power
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(...COL_INK_SOFT);
+        doc.text(`~${h.power_kW} kW at ${r.depth_m} m`, cx + 3, y + 23);
+
+        // Note
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(6.5);
+        doc.setTextColor(...COL_INK_SOFT);
+        const noteLines = doc.splitTextToSize(h.note, cardW - 6);
+        doc.text(noteLines.slice(0, 4), cx + 3, y + 28);
+      });
+      y += cardH + 7;
+
+      // Explainer
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...COL_INK_FAINT);
+      const explainerLines = doc.splitTextToSize(
+        'Depleting mode: higher initial output, but ground temperature drops over time and the system loses effectiveness. Sustainable mode: ground temperature stays stable, system delivers the same output indefinitely. A real BHE installation should plan for the 100-year sustainable value.',
+        CONTENT_W
+      );
+      doc.text(explainerLines, M_LEFT, y);
+      y += explainerLines.length * 3 + 10;
+    }
+
+    // -------- AI INTERPRETATION --------
+    if (data.ai_explanation) {
+      if (y > 230) { doc.addPage(); y = 20; }
+
+      doc.setTextColor(...COL_INK);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('What this means for your site', M_LEFT, y);
+      y += 7;
+
+      doc.setFillColor(...COL_BG_ALT);
+      const aiText = data.ai_explanation;
+      const aiLines = doc.splitTextToSize(aiText, CONTENT_W - 8);
+      const aiHeight = aiLines.length * 4.2 + 12;
+
+      doc.rect(M_LEFT, y, CONTENT_W, aiHeight, 'F');
+      doc.setDrawColor(...COL_ACCENT);
+      doc.setLineWidth(1);
+      doc.line(M_LEFT, y, M_LEFT, y + aiHeight);
+
+      doc.setTextColor(...COL_ACCENT);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      doc.text('AI INTERPRETATION', M_LEFT + 4, y + 5);
+
+      doc.setTextColor(...COL_INK_SOFT);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(aiLines, M_LEFT + 4, y + 11);
+
+      y += aiHeight + 10;
+    }
+
+    // -------- METHODOLOGY + DISCLAIMER --------
+    if (y > 240) { doc.addPage(); y = 20; }
+
+    doc.setTextColor(...COL_INK);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text('Methodology', M_LEFT, y);
+    y += 5;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...COL_INK_SOFT);
+    const methodText = 'Sustainable extraction rates derive from a semi-analytical model coupling 8 CMIP6 climate model projections with finite line source (FLS) heat transport theory, using Brent\'s root-finding method to compute the maximum heat extraction rate that maintains ground temperature above -1.5 deg C over the operating horizon. Spatial resolution is 5 km, processed in Google Earth Engine and Python. Drilling cost estimates from German market literature (50-90 EUR/m typical range). Heat pump unit cost from German installation surveys (8000-15000 EUR typical).';
+    const methodLines = doc.splitTextToSize(methodText, CONTENT_W);
+    doc.text(methodLines, M_LEFT, y);
+    y += methodLines.length * 3.3 + 7;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...COL_INK);
+    doc.text('Disclaimer', M_LEFT, y);
+    y += 5;
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...COL_INK_SOFT);
+    const disclaimerText = 'This report is a first-pass feasibility estimate, not engineering advice. Real geothermal yield depends on local subsurface geology, groundwater conditions, and thermal response testing (TRT) at the actual site. Drilling and installation costs vary widely by contractor, region, and permitting complexity. For an actual project, consult a licensed geothermal contractor and complete a TRT before drilling. The author and the tool make no warranty as to fitness for any specific application.';
+    const disclaimerLines = doc.splitTextToSize(disclaimerText, CONTENT_W);
+    doc.text(disclaimerLines, M_LEFT, y);
+    y += disclaimerLines.length * 3.3 + 4;
+
+    // -------- FOOTER on every page --------
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setDrawColor(...COL_LINE);
+      doc.setLineWidth(0.3);
+      doc.line(M_LEFT, PAGE_H - 14, PAGE_W - M_RIGHT, PAGE_H - 14);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(...COL_INK_FAINT);
+      doc.text('Vaibhav Jaiswal  ·  MSc Applied Geosciences, KIT  ·  vaibhavjgeo.vercel.app', M_LEFT, PAGE_H - 9);
+      doc.text(`Page ${i} of ${pageCount}`, PAGE_W - M_RIGHT, PAGE_H - 9, { align: 'right' });
+    }
+  }
+
+
+  Promise.all([loadGermanyBoundary(), refreshOverlay()]).then(() => {
+    if (germanyLayer) germanyLayer.bringToFront();
+    if (currentMarker) currentMarker.bringToFront();
+  });
+
+})();
+</script>
+
+
+<!-- Vercel Web Analytics -->
+
+
+<!-- Hamburger menu toggle -->
+<script>
+(function() {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!toggle || !nav) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
+</script>
+
+<!-- Vercel Web Analytics -->
+<script>
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+</body>
+</html>
