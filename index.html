@@ -360,14 +360,14 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
   <section class="hero">
     <div class="eyebrow">→ Site-specific geothermal feasibility</div>
     <h1>Should you drill a <em>borehole</em> here?</h1>
-    <p>Click a site on the map of Germany to read the sustainable geothermal extraction rate at that exact location, then get a depth, output and cost estimate. Powered by real thesis data, 5 km resolution.</p>
-    <p class="audience">For homeowners considering geothermal, students learning the field, or anyone curious about a specific site in Germany.</p>
+    <p>Click a site on the map of Germany to read the sustainable geothermal extraction rate at that grid cell (a 5 km analysis grid resampled from ~25 km CMIP6 climate data - an interpolation, not a site measurement), then get a depth, output and cost estimate. Powered by real thesis data, 5 km resolution.</p>
+    <p class="audience">A first orientation for homeowners (before consulting a certified drilling company), students learning the field, or anyone curious about a specific site in Germany.</p>
     <span class="tech-tag">→ Built with Vercel serverless · Node.js · Leaflet · jsPDF · Google Gemini · <a href="https://github.com/vaibhavjgeo/bhe-recommender" target="_blank" rel="noopener">source on GitHub</a></span>
   </section>
 
   <div class="info-callout-wrap">
     <div class="info-callout">
-      First-pass estimate, not engineering advice. Values come from CMIP6 ensemble averages at 5 km resolution; local geology, groundwater, and permits will shift the real numbers. See the methodology and disclaimer in any generated PDF report.
+      First-pass estimate, not engineering advice - and not a VDI 4640 design. Values come from CMIP6 ensemble averages on a 5 km analysis grid (resampled from ~25 km native data) under a uniform ground assumption; real per-metre yield is driven mainly by local ground type and groundwater (VDI 4640 Blatt 2: roughly 20-100 W/m), which this tool does not resolve. Drilling a borehole heat exchanger in Germany requires a water-law notification or permit - see Permitting below. See the methodology and disclaimer in any generated PDF report.
     </div>
   </div>
 
@@ -388,6 +388,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
         </div>
         <div class="map-legend">
           <h4>Sustainable heat extraction (W/m)</h4>
+          <p style="font-size:11.5px;color:#6b7a72;margin:4px 0 0;">W/m = per metre of borehole; × depth = source watts; the heat pump delivers more (adds compressor work).</p>
           <div class="bar"></div>
           <div class="vals"><span>40</span><span>45</span><span>50</span><span>55</span></div>
         </div>
@@ -518,8 +519,12 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     </div>
     <div class="tech-grid">
       <div class="tech-block">
+        <span class="label">Permitting (Germany)</span>
+        <p>Every BHE needs a notification or permit under the Wasserhaushaltsgesetz (WHG) and Land water law; drilling is generally prohibited in Wasserschutzgebiete. Systems above ~30 kW typically require a Thermal Response Test; boreholes deeper than ~100 m can additionally fall under Bergrecht - relevant, since this model assumes H = 150 m. A real VDI 4640 design additionally fixes probe spacing (≥ 5-6 m), grout, and annual full-load hours (~1,800 h) - none of which this first-pass includes; flowing groundwater can add tens of W/m (not modelled). What a household ultimately pays depends on the heat pump's seasonal performance (JAZ/SCOP), which improves as source temperature rises.</p>
+      </div>
+      <div class="tech-block">
         <span class="label">Data</span>
-        <p>4 pre-computed JSON files from my thesis (2 SSP scenarios × 2 ensemble statistics), 5 km resolution across Germany.</p>
+        <p>4 pre-computed JSON files from my thesis (2 SSP scenarios × 2 ensemble statistics), a 5 km analysis grid (resampled from ~25 km native CMIP6 data) across Germany.</p>
       </div>
       <div class="tech-block">
         <span class="label">Frontend</span>
@@ -622,6 +627,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     minZoom: 5,
     maxZoom: 12,
   });
+L.control.scale({imperial:false}).addTo(map);
 
   // Fit Germany inside the panel on initial load (bounds roughly cover Germany's extent)
   map.fitBounds([[47.3, 5.9], [55.1, 15.0]], { padding: [10, 10] });
@@ -853,7 +859,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     readout.innerHTML = `
       <span class="label">Selected site (${yieldText})</span>
       <div class="coords">${lat.toFixed(3)}°N, ${lng.toFixed(3)}°E</div>
-      <div class="yield">${q.toFixed(2)} <small>W/m sustainable</small></div>
+      <div class="yield">${q.toFixed(2)} <small>W/m sustainable · interpolated from ~25 km climate cell</small></div>
     `;
   }
 
@@ -1041,7 +1047,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
           <h3>Cost breakdown</h3>
           <table class="cost-table">
             <tr>
-              <td>Drilling (${r.depth_m} m at €${Math.round(c.drilling / r.depth_m)} / m)</td>
+              <td>Drilling (${r.depth_m} m at €${Math.round(c.drilling / r.depth_m)} / m, 2025 German market)</td>
               <td>€${fmt(c.drilling)} <span class="cost-range">(range €${fmt(c.drilling_range[0])} - €${fmt(c.drilling_range[1])})</span></td>
             </tr>
             <tr>
