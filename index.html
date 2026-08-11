@@ -519,19 +519,19 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     <div class="tech-grid">
       <div class="tech-block">
         <span class="label">Permitting (Germany)</span>
-        <p>Every BHE needs a notification or permit under the Wasserhaushaltsgesetz (WHG) and Land water law; drilling is generally prohibited in Wasserschutzgebiete. Systems above ~30 kW typically require a Thermal Response Test; boreholes deeper than ~100 m can additionally fall under Bergrecht - relevant, since this model assumes H = 150 m. A real VDI 4640 design additionally fixes probe spacing (≥ 5-6 m), grout, and annual full-load hours (~1,800 h) - none of which this first-pass includes; flowing groundwater can add tens of W/m (not modelled). What a household ultimately pays depends on the heat pump's seasonal performance (JAZ/SCOP), which improves as source temperature rises.</p>
+        <p>Every BHE needs a notification or permit under the Wasserhaushaltsgesetz (WHG) and Land water law; drilling is generally prohibited in Wasserschutzgebiete. Systems above ~30 kW typically require a Thermal Response Test, and boreholes deeper than ~100 m can fall under Bergrecht - relevant, since this model assumes H = 150 m.</p>
+      </div>
+      <div class="tech-block">
+        <span class="label">Design reality (VDI 4640)</span>
+        <p>A real design fixes probe spacing (≥ 5-6 m), grout, and annual full-load hours (~1,800 h) - none of which this first-pass includes. Flowing groundwater can add tens of W/m (not modelled), and what a household pays depends on the heat pump's seasonal performance (JAZ/SCOP), which improves as source temperature rises.</p>
       </div>
       <div class="tech-block">
         <span class="label">Data</span>
-        <p>4 pre-computed JSON files from my thesis (2 SSP scenarios × 2 ensemble statistics), a 5 km analysis grid (resampled from ~25 km native CMIP6 data) across Germany.</p>
+        <p>4 pre-computed JSON files from my thesis (2 SSP scenarios × 2 ensemble statistics) on a 5 km analysis grid, resampled from ~25 km native CMIP6 data, across Germany. Clicked values are interpolations of the coarse climate cells - first-pass magnitudes, not site measurements.</p>
       </div>
       <div class="tech-block">
-        <span class="label">Frontend</span>
-        <p>Vanilla HTML / CSS / JS, Leaflet maps with custom pixel rendering via chroma-js, jsPDF for client-side reports.</p>
-      </div>
-      <div class="tech-block">
-        <span class="label">Backend & AI</span>
-        <p>Vercel serverless functions handle depth and cost calculations. Google Gemini writes site interpretations.</p>
+        <span class="label">Stack &amp; AI</span>
+        <p>Vanilla HTML / CSS / JS with Leaflet maps and custom pixel rendering via chroma-js; jsPDF builds the client-side report. A Vercel serverless function runs the depth and cost calculations, and Google Gemini writes the plain-language site interpretation.</p>
       </div>
     </div>
   </section>
