@@ -377,7 +377,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     <div class="map-panel">
       <div class="map-panel-header">
         <h2>Pick a site</h2>
-        <div class="sub">Click any point in Germany. The map shows sustainable heat extraction (W/m) under your chosen scenario and statistic.</div>
+        <div class="sub">Click any point in Germany. The map shows sustainable heat extraction (W/m) under your chosen scenario and statistic. W/m = watts per metre of borehole; × depth = source watts; the heat pump delivers more (adds compressor work).</div>
       </div>
       <div class="map-wrap">
         <div id="map"></div>
@@ -388,7 +388,6 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
         </div>
         <div class="map-legend">
           <h4>Sustainable heat extraction (W/m)</h4>
-          <p style="font-size:11.5px;color:#6b7a72;margin:4px 0 0;">W/m = per metre of borehole; × depth = source watts; the heat pump delivers more (adds compressor work).</p>
           <div class="bar"></div>
           <div class="vals"><span>40</span><span>45</span><span>50</span><span>55</span></div>
         </div>
@@ -534,14 +533,6 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
         <span class="label">Backend & AI</span>
         <p>Vercel serverless functions handle depth and cost calculations. Google Gemini writes site interpretations.</p>
       </div>
-      <div class="tech-block">
-        <span class="label">Hosting</span>
-        <p>Vercel free tier with GitHub auto-deploy. Total infrastructure cost: <strong>€0 / month</strong>.</p>
-      </div>
-      <div class="tech-block">
-        <span class="label">Development</span>
-        <p>AI-pair-programming with <strong>Anthropic Claude</strong>, ChatGPT, and GitHub Copilot. Architecture and review by me.</p>
-      </div>
     </div>
   </section>
 
@@ -627,7 +618,7 @@ footer { padding: 80px 0 36px; background: var(--ink); color: var(--bg); border-
     minZoom: 5,
     maxZoom: 12,
   });
-L.control.scale({imperial:false}).addTo(map);
+L.control.scale({imperial:false, position:'topright'}).addTo(map);
 
   // Fit Germany inside the panel on initial load (bounds roughly cover Germany's extent)
   map.fitBounds([[47.3, 5.9], [55.1, 15.0]], { padding: [10, 10] });
